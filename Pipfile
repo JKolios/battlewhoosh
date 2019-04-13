@@ -4,8 +4,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+ipdb = "==0.12"
 
 [packages]
+ujson = "==1.35"
+Whoosh = "==2.7.4"
 
 [requires]
 python_version = "3.7"
