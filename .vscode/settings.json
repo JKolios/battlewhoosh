@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/home/jsone/.local/share/virtualenvs/battlewhoosh-Q1roDJJ0/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
