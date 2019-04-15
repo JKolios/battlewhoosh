@@ -1,6 +1,7 @@
 import os
 import os.path
 import sys
+import pprint
 
 import whoosh
 from whoosh.qparser import QueryParser
@@ -33,6 +34,14 @@ def scrape_profiles_of_type(profile_type):
     return profiles
 
 
+def search(index, default_attribute, query_string, max_results=None):
+    with index.searcher() as searcher:
+        query_parser = QueryParser(default_attribute, schema=Schema.schema())
+        query = query_parser.parse(query_string)
+        search_hits = searcher.search(query, limit=max_results)
+        return [hit.fields() for hit in search_hits]
+
+
 def main(argv):
     index = setup_index()
     for profile_type in PROFILE_TYPES:
@@ -42,12 +51,9 @@ def main(argv):
             for profile in profiles:
                 index_writer.add_document(**profile)
 
-    with index.searcher() as searcher:
-        query_parser = QueryParser("name", schema=Schema.schema())
-        query = query_parser.parse(argv[1])
-        query_results = searcher.search(query, limit=None)
-        for result in query_results:
-            print(result)
+    search_results = search(index, 'name', argv[1])
+    for result in search_results:
+        pprint.pprint(result)
 
 
 if __name__ == '__main__':
