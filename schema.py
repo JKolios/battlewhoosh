@@ -3,6 +3,7 @@ import whoosh.fields
 
 class Schema(whoosh.fields.SchemaClass):
 
+    game = whoosh.fields.ID(stored=True)
     document_type = whoosh.fields.ID(stored=True)
     faction = whoosh.fields.ID(stored=True)
     name = whoosh.fields.NGRAM(stored=True, phrase=False)
@@ -27,3 +28,6 @@ class Schema(whoosh.fields.SchemaClass):
     Description = whoosh.fields.ID(stored=True)
     PsychicPower = whoosh.fields.ID(stored=True)
     Ability = whoosh.fields.ID(stored=True)
+    Details = whoosh.fields.ID(stored=True)
+    WarpCharge = whoosh.fields.ID(stored=True)
+    Effect = whoosh.fields.ID(stored=True)
