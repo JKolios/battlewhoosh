@@ -1,7 +1,5 @@
 import os
 import os.path
-import sys
-import pprint
 
 import whoosh
 from whoosh.qparser import QueryParser
@@ -12,7 +10,8 @@ from schema import Schema
 DATA_DIR = 'datafiles'
 INDEX_DIR = 'indices'
 PROFILE_TYPES = ['Weapon', 'Model', 'Ability',
-                 'Psychic Power', 'Wargear', 'Astra Militarum Orders']
+                 'Psychic Power', 'Wargear', 'Astra Militarum Orders',
+                 'unit']
 
 
 def setup_index():
@@ -42,7 +41,7 @@ def search(index, default_attribute, query_string, max_results=None):
         return [hit.fields() for hit in search_hits]
 
 
-def main(argv):
+def main():
     index = setup_index()
     for profile_type in PROFILE_TYPES:
         print(f'Processing profile type: {profile_type}')
@@ -50,11 +49,8 @@ def main(argv):
         with index.writer() as index_writer:
             for profile in profiles:
                 index_writer.add_document(**profile)
-
-    search_results = search(index, 'name', argv[1])
-    for result in search_results:
-        pprint.pprint(result)
+    print('Index creation complete.')
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()

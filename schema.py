@@ -6,7 +6,7 @@ class Schema(whoosh.fields.SchemaClass):
     game = whoosh.fields.ID(stored=True)
     document_type = whoosh.fields.ID(stored=True)
     faction = whoosh.fields.ID(stored=True)
-    name = whoosh.fields.NGRAM(stored=True, phrase=False)
+    name = whoosh.fields.NGRAMWORDS(stored=True)
     book = whoosh.fields.ID(stored=True)
     page = whoosh.fields.ID(stored=True)
     Type = whoosh.fields.ID(stored=True)
