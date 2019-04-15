@@ -2,29 +2,20 @@ import os
 import os.path
 import sys
 
-from whoosh import index
-from whoosh.index import open_dir
+import whoosh
 from whoosh.qparser import QueryParser
 
 from catalogue.file import CatalogueFile
-from schemas.schema import _Schema
-from schemas.model import Model
-from schemas.weapon import Weapon
+from schema import Schema
 
 DATA_DIR = 'datafiles'
 INDEX_DIR = 'indices'
+PROFILE_TYPES = ['Weapon', 'Model', 'Ability',
+                 'Psychic Power', 'Wargear', 'Astra Militarum Orders']
 
 
-def discover_schemas():
-    return [cls for cls in _Schema.__subclasses__()]
-
-
-def setup_indices(schema_classes):
-    indices = {}
-    for schema_class in schema_classes:
-        schema_index = index.create_in(INDEX_DIR, schema_class.whoosh_schema)
-        indices[schema_class] = schema_index
-    return indices
+def setup_index():
+    return whoosh.index.create_in(INDEX_DIR, Schema)
 
 
 def scrape_profiles_of_type(profile_type):
@@ -43,28 +34,19 @@ def scrape_profiles_of_type(profile_type):
 
 
 def main(argv):
-    schemas = discover_schemas()
-    indices = setup_indices(schemas)
-    for schema_class, idx in indices.items():
-        print(f'Processing profile type: {schema_class.profile_type}')
-        index_writer = idx.writer()
-        profiles = scrape_profiles_of_type(schema_class.profile_type)
-        for profile in profiles:
-            schema_class.write_document(index_writer, profile)
-        index_writer.commit()
+    index = setup_index()
+    for profile_type in PROFILE_TYPES:
+        print(f'Processing profile type: {profile_type}')
+        profiles = scrape_profiles_of_type(profile_type)
+        with index.writer() as index_writer:
+            for profile in profiles:
+                index_writer.add_document(**profile)
 
-    dir_index = open_dir(INDEX_DIR)
-    with dir_index.searcher() as searcher:
-        weapon_q_parser = QueryParser("name", schema=Weapon.whoosh_schema)
-        weapon_q = weapon_q_parser.parse(argv[1])
-        weapon_q_results = searcher.search(weapon_q)
-        for result in weapon_q_results:
-            print(result)
-
-        model_q_parser = QueryParser("name", schema=Model.whoosh_schema)
-        model_q = model_q_parser.parse(argv[1])
-        model_q_results = searcher.search(model_q)
-        for result in model_q_results:
+    with index.searcher() as searcher:
+        query_parser = QueryParser("name", schema=Schema.schema())
+        query = query_parser.parse(argv[1])
+        query_results = searcher.search(query, limit=None)
+        for result in query_results:
             print(result)
 
 

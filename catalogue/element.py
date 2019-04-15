@@ -65,9 +65,12 @@ class CatalogueElement:
         # FIXME: This is a temporary hack
         try:
             if 'value' in child_attrs.keys():
+                if child_attrs['name'] == 'Psychic Power':
+                    return {'PsychicPower': child_attrs['value']}
                 return {child_attrs['name']: child_attrs['value']}
             if 'profileTypeName' in child_attrs.keys():
                 return {
+                    'document_type': child_attrs.get('profileTypeName'),
                     'name': child_attrs['name'],
                     'book': child_attrs.get('book'),
                     'page': child_attrs.get('page')
