@@ -1,6 +1,3 @@
 [submodule "datafiles/wh40k-killteam"]
 	path = datafiles/wh40k-killteam
 	url = https://github.com/BSData/wh40k-killteam.git
-[submodule "datafiles/wh40k"]
-	path = datafiles/wh40k
-	url = https://github.com/BSData/wh40k.git
