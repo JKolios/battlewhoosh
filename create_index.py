@@ -7,11 +7,10 @@ from whoosh.qparser import QueryParser
 from catalogue.file import CatalogueFile
 from schema import Schema
 
-DATA_DIR = 'datafiles'
-INDEX_DIR = 'indices'
+DATA_DIR = 'catalogues'
+INDEX_DIR = 'catalogue_indices'
 PROFILE_TYPES = ['Weapon', 'Model', 'Ability',
-                 'Psychic Power', 'Wargear', 'Astra Militarum Orders',
-                 'unit']
+                 'Psychic Power', 'Wargear', 'Psyker']
 
 
 def setup_index():

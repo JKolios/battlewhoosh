@@ -3,7 +3,7 @@ import curses
 from schema import Schema
 import search.interface
 
-INDEX_DIR = 'indices'
+INDEX_DIR = 'catalogue_indices'
 
 
 def main(stdscr):

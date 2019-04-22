@@ -47,7 +47,7 @@ class Interface:
         self.key_handlers.get(incoming_key, self.no_op)()
 
     def run_search(self, term):
-        return self.search_context.search('name', term, max_results=MAX_RESULT_LINES)
+        return self.search_context.search(['name', 'document_type'], term, max_results=MAX_RESULT_LINES)
 
     def search_and_display(self):
         self.term_window.show_search_term(self.search_term)
