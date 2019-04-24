@@ -1,15 +1,16 @@
-import curses
+import npyscreen
 
 from schema import Schema
-import search.interface
+from search.application import SearchApp
+from search.context import SearchContext
 
 INDEX_DIR = 'catalogue_indices'
 
 
-def main(stdscr):
-    interface = search.interface.Interface(stdscr, INDEX_DIR, Schema.schema())
-    while True:
-        interface.handle_input()
+def main():
+    search_context = SearchContext(INDEX_DIR, Schema.schema())
+    SearchApp(search_context).run()
 
 
-curses.wrapper(main)
+if __name__ == '__main__':
+    main()

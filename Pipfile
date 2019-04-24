@@ -11,7 +11,7 @@ autopep8 = "*"
 [packages]
 ujson = "==1.35"
 Whoosh = "==2.7.4"
-
+npyscreen = "*"
 
 [requires]
 python_version = "3.7"
