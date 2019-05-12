@@ -1,5 +1,4 @@
 import npyscreen
-import pprint
 
 class ResultText(npyscreen.MultiLine):
     def __init__(self, *args, **kwargs):
@@ -14,5 +13,6 @@ class ResultText(npyscreen.MultiLine):
         if self.value is not None:
             search_result = self.values[self.value]
             self.parent.detail_text.values = [f'{key}:{val}' for key, val in search_result.items()]
+            self.parent.detail_text.edit()
             self.parent.detail_text.clear()
             self.parent.detail_text.display()

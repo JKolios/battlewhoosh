@@ -103,7 +103,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-catalogue_indices/*
-catalogues/*
-rosters/*
+indices/*
+input_files/*
 .vscode

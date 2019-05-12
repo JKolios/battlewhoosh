@@ -3,6 +3,10 @@ import os.path
 class Element:
     INTERNAL_ATTRS = {'id', 'characteristicTypeId',
                   'hidden', 'TypeId', 'profileTypeId'}
+    
+    DIR_TO_GAME_MAPPING = {
+    'wh40k-killteam': 'Warhammer 40K: Kill Team',
+}
 
     def __init__(self, xml_element, catalogue_file, profile_type=None):
         self.element = xml_element
@@ -42,6 +46,10 @@ class Element:
     def faction(self):
         file_name = os.path.split(self.catalogue_file.file_name())[1]
         return os.path.splitext(file_name)[0]
+
+    def game(self):
+        _, game_dir = os.path.split(os.path.dirname(self.catalogue_file.file_name()))
+        return self.DIR_TO_GAME_MAPPING[game_dir]
 
     def _resolve_associated_element(self, element_id):
         associated_element = self.catalogue_file.get_element_by_id(element_id)

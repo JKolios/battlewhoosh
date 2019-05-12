@@ -1,25 +1,55 @@
 import os
 import os.path
 
-import whoosh
-from whoosh.qparser import QueryParser
+import whoosh.index
 
-from catalogue.file import CatalogueFile
+from battlescribe_parser.catalogue.file import CatalogueFile
+from battlescribe_parser.roster.file import RosterFile
 from schema import Schema
 
-DATA_DIR = 'catalogues'
-INDEX_DIR = 'catalogue_indices'
+CATALOGUE_DATA_DIR = 'input_files/catalogues'
+CATALOGUE_INDEX_DIR = 'indices/catalogue_indices'
+ROSTER_DATA_DIR = 'input_files/rosters'
+ROSTER_INDEX_DIR = 'indices/roster_indices'
 PROFILE_TYPES = ['Weapon', 'Model', 'Ability',
                  'Psychic Power', 'Wargear', 'Psyker']
 
 
-def setup_index():
-    return whoosh.index.create_in(INDEX_DIR, Schema)
+def setup_index(index_dir):
+    return whoosh.index.create_in(index_dir, Schema)
+
+
+def scrape_selections(index):
+    selections = []
+    for (dirpath, _, file_names) in os.walk(ROSTER_DATA_DIR):
+        for file_name in file_names:
+            file_path = os.path.join(dirpath, file_name)
+            _, ext = os.path.splitext(file_name)
+            if ext != '.cat':
+                print(f'Ignoring file: {file_path}')
+                continue
+            print(f'Parsing file: {file_path}')
+            cat_file = RosterFile(file_path)
+            selections += cat_file.scrape_selections()
+
+    with index.writer() as index_writer:
+        for selection in selections:
+            index_writer.add_document(**selection)
+    return selections
+
+
+def scrape_profiles(index):
+    for profile_type in PROFILE_TYPES:
+        print(f'Processing profile type: {profile_type}')
+        profiles = scrape_profiles_of_type(profile_type)
+        with index.writer() as index_writer:
+            for profile in profiles:
+                index_writer.add_document(**profile)
 
 
 def scrape_profiles_of_type(profile_type):
     profiles = []
-    for (dirpath, _, file_names) in os.walk(DATA_DIR):
+    for (dirpath, _, file_names) in os.walk(CATALOGUE_DATA_DIR):
         for file_name in file_names:
             file_path = os.path.join(dirpath, file_name)
             _, ext = os.path.splitext(file_name)
@@ -32,22 +62,15 @@ def scrape_profiles_of_type(profile_type):
     return profiles
 
 
-def search(index, default_attribute, query_string, max_results=None):
-    with index.searcher() as searcher:
-        query_parser = QueryParser(default_attribute, schema=Schema.schema())
-        query = query_parser.parse(query_string)
-        search_hits = searcher.search(query, limit=max_results)
-        return [hit.fields() for hit in search_hits]
-
-
 def main():
-    index = setup_index()
-    for profile_type in PROFILE_TYPES:
-        print(f'Processing profile type: {profile_type}')
-        profiles = scrape_profiles_of_type(profile_type)
-        with index.writer() as index_writer:
-            for profile in profiles:
-                index_writer.add_document(**profile)
+    print('Processing catalogues')
+    catalogue_index = setup_index(CATALOGUE_INDEX_DIR)
+    scrape_profiles(catalogue_index)
+
+    print('Processing rosters')
+    roster_index = setup_index(ROSTER_INDEX_DIR)
+    scrape_selections(roster_index)
+
     print('Index creation complete.')
 
 

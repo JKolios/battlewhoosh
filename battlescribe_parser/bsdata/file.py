@@ -25,7 +25,7 @@ class File:
 
     def file_name(self):
         return self.fname
-    
+
     @staticmethod
     def _get_file_root(fname):
         return ET.parse(fname).getroot()

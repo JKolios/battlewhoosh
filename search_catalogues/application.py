@@ -1,7 +1,7 @@
 import npyscreen
 
-from search.context import SearchContext
-from search.form import SearchForm
+from search_context.context import SearchContext
+from search_catalogues.form import SearchForm
 
 
 MAX_RESULT_LINES = 40

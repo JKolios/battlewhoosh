@@ -1,10 +1,8 @@
-import npyscreen
-
 from schema import Schema
-from search.application import SearchApp
-from search.context import SearchContext
+from search_catalogues.application import SearchApp
+from search_context.context import SearchContext
 
-INDEX_DIR = 'catalogue_indices'
+INDEX_DIR = 'indices/catalogue_indices'
 
 
 def main():

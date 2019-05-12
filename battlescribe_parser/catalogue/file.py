@@ -1,8 +1,8 @@
-import bsdata.file
-from catalogue.element import CatalogueElement
+import battlescribe_parser.bsdata.file
+from battlescribe_parser.catalogue.element import CatalogueElement
 
 
-class CatalogueFile(bsdata.file.File):
+class CatalogueFile(battlescribe_parser.bsdata.file.File):
 
     def scrape_profile_type(self, profile_type):
         profile_elements = self.get_elements_by_attribute(

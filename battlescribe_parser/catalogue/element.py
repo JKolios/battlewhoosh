@@ -1,20 +1,11 @@
 import os.path
 
-import bsdata.element
+import battlescribe_parser.bsdata.element
 
-DIR_TO_GAME_MAPPING = {
-    'catalogues/wh40k-killteam': 'Warhammer 40K: Kill Team',
-}
-
-
-class CatalogueElement(bsdata.element.Element):
+class CatalogueElement(battlescribe_parser.bsdata.element.Element):
     def __init__(self, xml_element, catalogue_file, profile_type):
         super().__init__(xml_element, catalogue_file)
         self.profile_type = profile_type
-
-    def game(self):
-        directory = os.path.dirname(self.catalogue_file.file_name())
-        return DIR_TO_GAME_MAPPING[directory]
 
     def scrape_profile(self):
         profile_data = {
