@@ -1,12 +1,11 @@
 import os.path
 
 class Element:
-    INTERNAL_ATTRS = {'id', 'characteristicTypeId',
-                  'hidden', 'TypeId', 'profileTypeId'}
-    
+    INTERNAL_ATTRS = {'id', 'characteristicTypeId', 'hidden', 'TypeId', 'profileTypeId'}
+
     DIR_TO_GAME_MAPPING = {
-    'wh40k-killteam': 'Warhammer 40K: Kill Team',
-}
+        'wh40k-killteam': 'Warhammer 40K: Kill Team',
+    }
 
     def __init__(self, xml_element, catalogue_file, profile_type=None):
         self.element = xml_element

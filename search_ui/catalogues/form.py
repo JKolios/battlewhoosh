@@ -1,9 +1,7 @@
-import curses
-
 import npyscreen
 
-from search_catalogues.term_text import TermText
-from search_catalogues.result_text import ResultText
+from search_ui.catalogues.term_text import TermText
+from search_ui.catalogues.result_text import ResultText
 
 class SearchForm(npyscreen.FormBaseNew):
     def create(self):
@@ -29,13 +27,13 @@ class SearchForm(npyscreen.FormBaseNew):
             name="Details:",
             scroll_exit=True,
             autowrap=True)
-    
+
     def jump_to_term_text(self, _input):
         self.term_text.edit()
-    
+
     def jump_to_result_text(self, _input):
         self.result_text.edit()
-    
+
     def jump_to_detail_text(self, _input):
         self.detail_text.edit()
 

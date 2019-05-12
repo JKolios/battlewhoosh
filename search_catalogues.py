@@ -1,5 +1,5 @@
 from schema import Schema
-from search_catalogues.application import SearchApp
+from search_ui.catalogues.application import SearchApp
 from search_context.context import SearchContext
 
 INDEX_DIR = 'indices/catalogue_indices'

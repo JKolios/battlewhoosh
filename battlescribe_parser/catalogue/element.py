@@ -1,5 +1,3 @@
-import os.path
-
 import battlescribe_parser.bsdata.element
 
 class CatalogueElement(battlescribe_parser.bsdata.element.Element):
@@ -38,7 +36,6 @@ class CatalogueElement(battlescribe_parser.bsdata.element.Element):
                 if attrs['name'] == 'Powers known':
                     return {'PowersKnown': attrs['value']}
                 return {attrs['name']: attrs['value']}
-            
             return {}
         except KeyError as exception:
             print(f'Exception: {exception} Attributes: {attrs} Profile Type: {self.profile_type}')
